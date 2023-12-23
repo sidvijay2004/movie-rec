@@ -46,7 +46,8 @@ def find_movies(data, user_ratings, num_movies):
         image_url = fetch_image_from_tmdb(tmdb_id)  # Function to fetch image URL
         movie_info = {
             'Movie Title': movie_data['Movie Title'],
-            'Image URL': image_url
+            'Image URL': image_url,
+            'TMDBId': tmdb_id  # Include the TMDB ID here
         }
         movies_info.append(movie_info)
 
