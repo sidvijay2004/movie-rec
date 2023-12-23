@@ -7,12 +7,16 @@ import numpy as np
 @app.route('/process_ratings', methods=['POST'])
 def process_ratings():
     user_input = request.json
-    data, weights = get_data()
+    print("Received input:", user_input)
+
+    # data, weights = get_data()
+    data = get_data()
 
     num_movies = user_input.get("num_movies", 5)  # Default to 5 if not provided
     user_ratings = user_input.get("ratings", {})
 
-    recommended_movies = find_movies(data, weights, user_ratings, num_movies)
+    # recommended_movies = find_movies(data, weights, user_ratings, num_movies)
+    recommended_movies = find_movies(data, user_ratings, num_movies)
 
     recommended_movies_serializable = []
     for movie in recommended_movies:
