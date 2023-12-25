@@ -1,6 +1,6 @@
-from . import app
 import mysql.connector
-from flask import Flask, jsonify
+from flask import jsonify
+from . import app  # Import the Flask app instance from the backend package
 
 # app = Flask(__name__)
 

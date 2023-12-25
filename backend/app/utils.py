@@ -6,7 +6,7 @@ import requests
 
 def get_data():
     # Load the CSV file into a DataFrame
-    file_path = 'data/movie_dataset.csv'  # Adjust this path as necessary if your folder is named 'data'
+    file_path = 'backend/data/movie_dataset.csv'
     data = pd.read_csv(file_path)
 
     # Define the weights for the features (currently unused)

@@ -84,6 +84,3 @@ def fetch_movie_details(tmdb_id):
     except Exception as e:
         print(f"Exception when fetching movie details: {e}")
         return None
-
-if __name__ == "__main__":
-    main()
