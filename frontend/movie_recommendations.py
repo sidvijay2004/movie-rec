@@ -106,7 +106,7 @@ def process_selected_movies(movies):
     else:
         st.error("No movies selected")
 
-@st.experimental_memo
+@st.cache_data
 def fetch_movie_details(tmdb_id):
     api_key = 'b2514b23ba9a0af593911399736a265b'
     url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={api_key}"

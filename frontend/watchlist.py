@@ -1,26 +1,29 @@
 import streamlit as st
 import requests
 
-def show_watch_list():
-    # Define the URL of the Flask API endpoint
+# Use Streamlit's caching to prevent re-fetching the same data on each rerun
+# @st.cache_data
+def get_watch_list():
     url = "http://127.0.0.1:5000/test_db_connection"
-    
-    # Perform a GET request to the Flask API
     response = requests.get(url)
-    
-    # Check if the request was successful
     if response.status_code == 200:
-        # If successful, get JSON data from the response
-        data = response.json()
-        
-        # Display the data in Streamlit
-        st.write("Database Connection Status:", data["message"])
-        
-        # Check if the "data" key is in the response and display it
-        if "data" in data:
-            st.write("Data from the database:", data["data"])
+        return response.json()
     else:
-        # If the request was not successful, display an error message
-        st.write("Failed to retrieve data from the backend. Status code:", response.status_code)
+        return {"message": f"Failed to retrieve data. Status code: {response.status_code}", "data": []}
+
+def show_watch_list():
+    data = get_watch_list()
+    
+    st.write("Database Connection Status:", data["message"])
+    
+    if "data" in data and data["data"]:
+        for entry in data["data"]:
+            # Use the 'image_url' key from each entry to display the image
+            if entry.get("image_url"):  # Make sure there is a URL
+                st.image(entry["image_url"], width=300)
+            else:
+                st.write("No image available for:", entry["title"])
+    else:
+        st.write("No data available.")
 
 
