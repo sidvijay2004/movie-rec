@@ -87,3 +87,32 @@ def add_to_watchlist():
     }
     return jsonify(response_message), 200 if added_movies > 0 or existing_movies > 0 else 500
 
+@app.route('/update_watch_status', methods=['PUT'])
+def update_watch_status_batch():
+    updates = request.json
+    try:
+        for update in updates:
+            movie_id = update['id']
+            watched_status = update['watched']
+            cursor.execute("UPDATE movies SET watched = %s WHERE id = %s", (watched_status, movie_id))
+        conn.commit()
+        return jsonify({"message": "Watch statuses updated successfully"}), 200
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"message": f"Failed to update watch statuses: {str(e)}"}), 500
+
+
+@app.route('/remove_from_watchlist', methods=['DELETE'])
+def remove_from_watchlist():
+    data = request.get_json()
+    movie_ids = data.get('movie_ids', [])
+    try:
+        # Create a SQL query to delete all movies with the provided IDs
+        query = "DELETE FROM movies WHERE id IN (%s)" % ','.join(['%s'] * len(movie_ids))
+        cursor.execute(query, tuple(movie_ids))
+        conn.commit()  # Commit the changes to the database
+        return jsonify({"message": f"Movies removed successfully"}), 200
+    except Exception as e:
+        conn.rollback()  # Rollback in case of error
+        return jsonify({"message": f"Failed to remove movies: {str(e)}"}), 500
+

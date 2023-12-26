@@ -2,6 +2,9 @@ import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import StandardScaler
 import requests
+from . import app
+from flask import jsonify
+
 
 
 def get_data():
@@ -71,3 +74,23 @@ def fetch_image_from_tmdb(tmdb_id):
         print(f"Error fetching image from TMDB: {e}")
         return None
 
+@app.route('/get_similar_movies/<int:tmdb_id>')
+def get_similar_movies(tmdb_id):
+    api_key = 'b2514b23ba9a0af593911399736a265b'
+    url = f'https://api.themoviedb.org/3/movie/{tmdb_id}/similar?api_key={api_key}&language=en-US&page=1'
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            similar_movies_data = response.json().get('results', [])[:5]
+
+            # Extract only the title and vote_average for each movie
+            similar_movies = [
+                {"title": movie["title"], "vote_average": movie["vote_average"]}
+                for movie in similar_movies_data
+            ]
+
+            return jsonify(similar_movies)
+        else:
+            return jsonify({"error": "Failed to fetch similar movies"}), response.status_code
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
