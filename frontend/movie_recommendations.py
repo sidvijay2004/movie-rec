@@ -1,5 +1,7 @@
 import streamlit as st
 import requests
+import os
+
 
 def add_movies_to_watchlist(movies):
     url = 'http://localhost:5000/add_to_watchlist'
@@ -27,7 +29,9 @@ def get_movie_recommendations(data):
         return None
 
 def show_movie_recommendations():
-    st.title("Movie Rating System")
+    st.title("Movie Recomendation Generator")
+    st.caption('Customize your movie recommendations! Rate your preferred levels for each category below:')
+
 
     # Creating sliders for each category
     comedy_rating = st.slider("Comedy", 1, 10, 5)
@@ -35,7 +39,25 @@ def show_movie_recommendations():
     action_rating = st.slider("Action", 1, 10, 5)
     drama_rating = st.slider("Drama", 1, 10, 5)
     acting_performance_rating = st.slider("Acting Performance", 1, 10, 5)
-    engagingness_rating = st.slider("Engagingness", 1, 10, 5)
+    engagingness_rating = st.slider("Engagement", 1, 10, 5)
+
+    # Creating checkboxes for Language
+    languages = []
+    english = st.checkbox("English", value=True)
+    tamil = st.checkbox("Tamil")
+    if english:
+        languages.append("English")
+    if tamil:
+        languages.append("Tamil")
+
+    # Creating checkboxes for Audience Rating
+    audience_rating = []
+    for_everyone = st.checkbox("For Everyone")
+    adult_only = st.checkbox("Adult Only")
+    if for_everyone:
+        audience_rating.append("For Everyone")
+    if adult_only:
+        audience_rating.append("Adult Only")
 
     if st.button('Submit Ratings'):
         data = {
@@ -47,6 +69,8 @@ def show_movie_recommendations():
                 'Acting Performance': acting_performance_rating,
                 'Engagingness': engagingness_rating
             },
+            'languages': languages,
+            'ratings_filter': audience_rating,
             'num_movies': 5
         }
         response = get_movie_recommendations(data)
@@ -63,10 +87,17 @@ def show_movie_selection_form(movies):
     if 'selected_movies' not in st.session_state:
         st.session_state['selected_movies'] = []
 
+    # Define the path to the placeholder image
+    placeholder_image_path = os.path.join(os.path.dirname(__file__), "..", "images", "no_image_found.png")
+
     for idx, movie in enumerate(movies):
         col1, spacer, col2, col3 = st.columns([2, 0.2, 2, 1])
         with col1:
-            st.image(movie["Image URL"], width=300)
+            if movie["Image URL"]:
+                st.image(movie["Image URL"], width=300)
+            else:
+                # Display a placeholder image
+                st.image(placeholder_image_path, width=300)
         with col2:
             expander = st.expander("Details")
             with expander:

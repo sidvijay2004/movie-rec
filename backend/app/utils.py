@@ -6,15 +6,32 @@ from . import app
 from flask import jsonify
 
 
-
-def get_data():
+def get_data(language_filters=None, rating_filters=None):
     # Load the CSV file into a DataFrame
     file_path = 'backend/data/movie_dataset.csv'
     data = pd.read_csv(file_path)
 
-    # Define the weights for the features (currently unused)
-    # weights = {'Comedy': 1.5, 'Romance': 1, 'Drama': 2, 'Action': 1, 'Acting Performance': 1.5, 'Engagingness': 1}
-    return data  # , weights
+    # Filter by language if filters are provided
+    if language_filters:
+        data = data[data['Language'].isin(language_filters)]
+
+    # Filter by appropriateness if filters are provided
+    if rating_filters:
+        # Map 'For Everyone' and 'Adult Only' to corresponding values in the dataset
+        rating_map = {
+            'For Everyone': 'Kid',  # Assuming 'Kid' is used in your dataset for general audiences
+            'Adult Only': 'Adult'
+        }
+        
+        # Translate user-friendly filters to dataset values
+        dataset_rating_filters = [rating_map.get(rating) for rating in rating_filters if rating in rating_map]
+
+        # Apply the filters
+        if dataset_rating_filters:
+            data = data[data['Appropriateness'].isin(dataset_rating_filters)]
+
+    return data
+
 
 def find_movies(data, user_ratings, num_movies):
     # Extract features
@@ -58,7 +75,7 @@ def find_movies(data, user_ratings, num_movies):
 
 def fetch_image_from_tmdb(tmdb_id):
     api_key = 'b2514b23ba9a0af593911399736a265b'
-    url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/images?api_key={api_key}&include_image_language=en"
+    url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/images?api_key={api_key}"
 
     try:
         response = requests.get(url)

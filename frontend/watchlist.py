@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # Use Streamlit's caching to prevent re-fetching the same data on each rerun
-# @st.cache(allow_output_mutation=True)
+# @st.cache_data
 def get_watch_list():
     url = "http://127.0.0.1:5000/test_db_connection"
     response = requests.get(url)
@@ -15,14 +15,14 @@ def update_watch_status(updates):
     url = "http://127.0.0.1:5000/update_watch_status"
     response = requests.put(url, json=updates)
     if response.status_code == 200:
-        st.success("Watch statuses updated successfully!")
+        st.success("Your Changes Were Updated!")
     else:
-        st.error(f"Failed to update watch statuses. Error: {response.text}")
+        st.error(f"Failed to Update Changes. Error: {response.text}")
 
 
 def show_watch_list():
     data = get_watch_list()
-    st.write("Database Connection Status:", data["message"])
+    st.title("Watchlist")
 
     if "data" in data and data["data"]:
         # Initialize session state for delete tracking if not already set
@@ -67,15 +67,17 @@ def show_watch_list():
         if submitted:
             if updates:
                 update_watch_status(updates)
+                st.experimental_rerun()  # Rerun the app to reflect the deletions
             if st.session_state.delete_ids:
                 remove_from_watchlist(st.session_state.delete_ids)
                 # Clear the session state after deletion
                 st.session_state.delete_ids = []
-                st.experimental_rerun()  # Rerun the app to reflect the deletions
+    
+
     else:
         st.write("No data available.")
 
-
+@st.cache_data
 def fetch_similar_movies_from_backend(tmdb_id):
     url = f"http://127.0.0.1:5000/get_similar_movies/{tmdb_id}"
     response = requests.get(url)

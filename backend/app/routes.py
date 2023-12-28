@@ -9,8 +9,12 @@ def process_ratings():
     user_input = request.json
     print("Received input:", user_input)
 
-    # data, weights = get_data()
-    data = get_data()
+    # Get language and rating filters from the user input
+    language_filters = user_input.get('languages', [])
+    rating_filters = user_input.get('audience_rating', [])
+
+    # Retrieve data with filters applied
+    data = get_data(language_filters, rating_filters)
 
     num_movies = user_input.get("num_movies", 5)  # Default to 5 if not provided
     user_ratings = user_input.get("ratings", {})

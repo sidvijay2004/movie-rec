@@ -1,21 +1,29 @@
-Movie Title,TMDBId,Comedy,Romance,Drama,Action,Acting Performance,Engagingness
-The Shawshank Redemption (1994),278,2,1,10,3,10,10
-The Godfather (1972),238,2,3,10,4,10,9
-The Godfather: Part II (1974),240,2,3,10,4,10,9
-The Dark Knight (2008),155,3,2,8,9,10,10
-12 Angry Men (1957),389,2,1,10,1,10,9
-Schindler's List (1993),424,1,2,10,2,10,9
-The Lord of the Rings: The Return of the King (2003),122,3,4,8,10,9,10
-Pulp Fiction (1994),680,8,4,8,6,9,10
-"The Good, the Bad and the Ugly (1966)",429,4,2,7,9,8,9
-The Lord of the Rings: The Fellowship of the Ring (2001),120,3,4,8,9,9,10
-Fight Club (1999),550,7,4,8,7,9,10
-Forrest Gump (1994),13,8,9,8,4,10,10
-Inception (2010),27205,3,3,8,10,9,10
-The Lord of the Rings: The Two Towers (2002),121,3,4,8,9,9,10
-Star Wars: Episode V - The Empire Strikes Back (1980),1891,5,4,7,10,9,10
-The Matrix (1999),603,4,3,7,10,9,10
-Goodfellas (1990),769,6,3,9,7,10,9
-One Flew Over the Cuckoo's Nest (1975),510,5,2,10,3,10,10
-Seven Samurai (1954),346,3,2,9,9,9,9
-Se7en (1995),807,1,2,9,5,10,10
+Movie Title,TMDBId,Comedy,Romance,Drama,Action,Acting Performance,Engagingness,Language,Appropriateness
+The Shawshank Redemption (1994),278,2,1,10,3,10,10,English,Adult
+The Godfather (1972),238,2,3,10,4,10,9,English,Adult
+The Godfather: Part II (1974),240,2,3,10,4,10,9,English,Adult
+The Dark Knight (2008),155,3,2,8,9,10,10,English,Kid
+12 Angry Men (1957),389,2,1,10,1,10,9,English,Kid
+Schindler's List (1993),424,1,2,10,2,10,9,English,Adult
+The Lord of the Rings: The Return of the King (2003),122,3,4,8,10,9,10,English,Kid
+Pulp Fiction (1994),680,8,4,8,6,9,10,English,Adult
+"The Good, the Bad and the Ugly (1966)",429,4,2,7,9,8,9,English,Adult
+The Lord of the Rings: The Fellowship of the Ring (2001),120,3,4,8,9,9,10,English,Kid
+Fight Club (1999),550,7,4,8,7,9,10,English,Adult
+Forrest Gump (1994),13,8,9,8,4,10,10,English,Kid
+Inception (2010),27205,3,3,8,10,9,10,English,Kid
+The Lord of the Rings: The Two Towers (2002),121,3,4,8,9,9,10,English,Kid
+Star Wars: Episode V - The Empire Strikes Back (1980),1891,5,4,7,10,9,10,English,Kid
+The Matrix (1999),603,4,3,7,10,9,10,English,Adult
+Goodfellas (1990),769,6,3,9,7,10,9,English,Adult
+One Flew Over the Cuckoo's Nest (1975),510,5,2,10,3,10,10,English,Adult
+Seven Samurai (1954),346,3,2,9,9,9,9,English,Kid
+Se7en (1995),807,1,2,9,5,10,10,English,Adult
+Velayilla Pattathari,262970,7,8,7,6,8,8,Tamil,Kid
+Sivaji the Boss,24049,7,7,8,9,9,9,Tamil,Kid
+Thuppakki,143010,5,6,7,10,8,9,Tamil,Kid
+Soodhu Kavvum,189227,8,5,7,4,8,8,Tamil,Kid
+Jigarthanda,270766,7,6,9,7,9,9,Tamil,Kid
+Singam,62756,6,7,6,9,8,8,Tamil,Kid
+Kaithi,587030,3,2,8,9,9,9,Tamil,Kid
+Doctor,673692,7,6,7,6,8,8,Tamil,Kid
