@@ -84,6 +84,10 @@ def show_movie_recommendations():
         show_movie_selection_form(st.session_state['movie_recommendations'])
 
 def show_movie_selection_form(movies):
+    if not movies:  # Check if the movies list is empty
+        st.write("No movie recommendations available with the given criteria.")
+        return
+
     if 'selected_movies' not in st.session_state:
         st.session_state['selected_movies'] = []
 
@@ -93,7 +97,7 @@ def show_movie_selection_form(movies):
     for idx, movie in enumerate(movies):
         col1, spacer, col2, col3 = st.columns([2, 0.2, 2, 1])
         with col1:
-            if movie["Image URL"]:
+            if movie.get("Image URL"):
                 st.image(movie["Image URL"], width=300)
             else:
                 # Display a placeholder image
@@ -103,17 +107,16 @@ def show_movie_selection_form(movies):
             with expander:
                 movie_details = fetch_movie_details(movie['TMDBId'])
                 if movie_details:
-                    st.write("Title:", movie_details['title'])
-                    st.write("Budget:", f"${movie_details['budget']:,}")
-                    st.write("Revenue:", f"${movie_details['revenue']:,}")
-                    st.write("Release Date:", movie_details['release_date'])
-                    st.write("Tagline:", movie_details['tagline'])
-                    st.write("Overview:", movie_details['overview'])
+                    st.write("Title:", movie_details.get('title', 'N/A'))
+                    st.write("Budget:", f"${movie_details.get('budget', 0):,}")
+                    st.write("Revenue:", f"${movie_details.get('revenue', 0):,}")
+                    st.write("Release Date:", movie_details.get('release_date', 'N/A'))
+                    st.write("Tagline:", movie_details.get('tagline', 'N/A'))
+                    st.write("Overview:", movie_details.get('overview', 'N/A'))
                 else:
                     st.error("Failed to fetch movie details.")
         with col3:
-            # checkbox_label = f"Select {movie['Title']} to Watchlist"
-            checkbox_label = f"Select to Watchlist"
+            checkbox_label = "Select to Watchlist"
             if st.checkbox(checkbox_label, key=f"select_{movie['TMDBId']}"):
                 if movie['TMDBId'] not in st.session_state['selected_movies']:
                     st.session_state['selected_movies'].append(movie['TMDBId'])
@@ -123,6 +126,7 @@ def show_movie_selection_form(movies):
 
     if st.button("Add Selected Movies to Watchlist"):
         process_selected_movies(movies)
+
 
 def process_selected_movies(movies):
     selected_movies = [movie for movie in movies if movie['TMDBId'] in st.session_state['selected_movies']]

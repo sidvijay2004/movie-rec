@@ -6,48 +6,64 @@ from . import app
 from flask import jsonify
 
 
-def get_data(language_filters=None, rating_filters=None):
+def get_data(user_input):
     # Load the CSV file into a DataFrame
     file_path = 'backend/data/movie_dataset.csv'
     data = pd.read_csv(file_path)
 
     # Filter by language if filters are provided
-    if language_filters:
-        data = data[data['Language'].isin(language_filters)]
+    languages = user_input.get('languages', [])
+    if languages:
+        data = data[data['Language'].isin(languages)]
+    else:
+        # If no language is selected, return an empty DataFrame
+        return pd.DataFrame()
 
     # Filter by appropriateness if filters are provided
+    rating_filters = user_input.get('ratings_filter', [])
     if rating_filters:
         # Map 'For Everyone' and 'Adult Only' to corresponding values in the dataset
         rating_map = {
             'For Everyone': 'Kid',  # Assuming 'Kid' is used in your dataset for general audiences
             'Adult Only': 'Adult'
         }
-        
+
         # Translate user-friendly filters to dataset values
         dataset_rating_filters = [rating_map.get(rating) for rating in rating_filters if rating in rating_map]
 
         # Apply the filters
         if dataset_rating_filters:
             data = data[data['Appropriateness'].isin(dataset_rating_filters)]
+        else:
+            # If no valid audience rating is selected, return an empty DataFrame
+            return pd.DataFrame()
+    else:
+        # If no audience rating is selected at all, return an empty DataFrame
+        return pd.DataFrame()
 
     return data
 
 
 def find_movies(data, user_ratings, num_movies):
+    # Check if there are any available movies
+    if data.empty:
+        print("No available movies to recommend.")
+        return []
+
     # Extract features
     feature_columns = ['Comedy', 'Romance', 'Drama', 'Action', 'Acting Performance', 'Engagingness']
     features = data[feature_columns].copy()
-
-    # # Apply weights to features (currently not applied)
-    # for column, weight in weights.items():
-    #     features[column] *= weight
 
     # Scale the features
     scaler = StandardScaler()
     scaled_features = scaler.fit_transform(features)
 
+    # Adjust the number of neighbors based on available movies
+    available_movies = len(data)
+    num_neighbors = min(num_movies, available_movies)
+
     # Creating a KNN model and fitting it
-    knn_model = NearestNeighbors(n_neighbors=num_movies, algorithm='auto')
+    knn_model = NearestNeighbors(n_neighbors=num_neighbors, algorithm='auto')
     knn_model.fit(scaled_features)
 
     # Convert user ratings into a format suitable for scaling
@@ -72,6 +88,8 @@ def find_movies(data, user_ratings, num_movies):
         movies_info.append(movie_info)
 
     return movies_info
+
+
 
 def fetch_image_from_tmdb(tmdb_id):
     api_key = 'b2514b23ba9a0af593911399736a265b'
