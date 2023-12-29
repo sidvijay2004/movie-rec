@@ -29,11 +29,31 @@ def get_movie_recommendations(data):
         return None
 
 def show_movie_recommendations():
-    st.title("Movie Recomendation Generator")
-    st.caption('Customize your movie recommendations! Rate your preferred levels for each category below:')
+    st.title("Movie Recommendation Generator")
+    st.markdown("<h5 style='text-align: center; color: black;'>Customize your movie recommendations!</h3>", unsafe_allow_html=True)
 
+    # Filters Section with titles
+    st.subheader("Filters")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        # st.write("Language")
+        st.markdown("#### **Language**")
 
-    # Creating sliders for each category
+        # Creating checkboxes for Language within a column
+        english = st.checkbox("English", value=True)
+        tamil = st.checkbox("Tamil")
+
+    with col2:
+        # st.write("Audience Rating")
+        st.markdown("#### **Content Rating**")
+
+        # Creating checkboxes for Audience Rating within a column
+        for_everyone = st.checkbox("For Everyone")
+        adult_only = st.checkbox("Adult Only")
+
+    # Creating sliders for each category below the filters
+    st.subheader("Rate your preferred levels for each category:")
     comedy_rating = st.slider("Comedy", 1, 10, 5)
     romance_rating = st.slider("Romance", 1, 10, 5)
     action_rating = st.slider("Action", 1, 10, 5)
@@ -41,19 +61,13 @@ def show_movie_recommendations():
     acting_performance_rating = st.slider("Acting Performance", 1, 10, 5)
     engagingness_rating = st.slider("Engagement", 1, 10, 5)
 
-    # Creating checkboxes for Language
+    # Process the selected filters
     languages = []
-    english = st.checkbox("English", value=True)
-    tamil = st.checkbox("Tamil")
     if english:
         languages.append("English")
     if tamil:
         languages.append("Tamil")
-
-    # Creating checkboxes for Audience Rating
     audience_rating = []
-    for_everyone = st.checkbox("For Everyone")
-    adult_only = st.checkbox("Adult Only")
     if for_everyone:
         audience_rating.append("For Everyone")
     if adult_only:
@@ -124,8 +138,11 @@ def show_movie_selection_form(movies):
                 if movie['TMDBId'] in st.session_state['selected_movies']:
                     st.session_state['selected_movies'].remove(movie['TMDBId'])
 
-    if st.button("Add Selected Movies to Watchlist"):
-        process_selected_movies(movies)
+    # Align the "Add to Watchlist" button to the center or right
+    _, col_button, _ = st.columns([1, 2, 1])
+    with col_button:
+        if st.button("Add Selected Movies to Watchlist", key='add_watchlist_button'):
+            process_selected_movies(movies)
 
 
 def process_selected_movies(movies):

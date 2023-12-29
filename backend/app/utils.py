@@ -112,20 +112,23 @@ def fetch_image_from_tmdb(tmdb_id):
 @app.route('/get_similar_movies/<int:tmdb_id>')
 def get_similar_movies(tmdb_id):
     api_key = 'b2514b23ba9a0af593911399736a265b'
-    url = f'https://api.themoviedb.org/3/movie/{tmdb_id}/similar?api_key={api_key}&language=en-US&page=1'
+    # Change the endpoint to '/recommendations'
+    url = f'https://api.themoviedb.org/3/movie/{tmdb_id}/recommendations?api_key={api_key}&language=en-US&page=1'
     try:
         response = requests.get(url)
         if response.status_code == 200:
-            similar_movies_data = response.json().get('results', [])[:5]
+            # Update the data extraction according to the new API response format
+            recommended_movies_data = response.json().get('results', [])[:5]
 
-            # Extract only the title and vote_average for each movie
-            similar_movies = [
+            # Extract the desired fields (title and vote_average) for each recommended movie
+            recommended_movies = [
                 {"title": movie["title"], "vote_average": movie["vote_average"]}
-                for movie in similar_movies_data
+                for movie in recommended_movies_data
             ]
 
-            return jsonify(similar_movies)
+            return jsonify(recommended_movies)
         else:
-            return jsonify({"error": "Failed to fetch similar movies"}), response.status_code
+            return jsonify({"error": "Failed to fetch recommended movies"}), response.status_code
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+

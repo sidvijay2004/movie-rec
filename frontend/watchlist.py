@@ -14,10 +14,10 @@ def get_watch_list():
 def update_watch_status(updates):
     url = "http://127.0.0.1:5000/update_watch_status"
     response = requests.put(url, json=updates)
-    if response.status_code == 200:
-        st.success("Your Changes Were Updated!")
-    else:
-        st.error(f"Failed to Update Changes. Error: {response.text}")
+    # if response.status_code == 200:
+    #     st.success("Your Changes Were Updated!")
+    # else:
+    #     st.error(f"Failed to Update Changes. Error: {response.text}")
 
 
 def show_watch_list():
@@ -67,11 +67,12 @@ def show_watch_list():
         if submitted:
             if updates:
                 update_watch_status(updates)
-                st.experimental_rerun()  # Rerun the app to reflect the deletions
             if st.session_state.delete_ids:
                 remove_from_watchlist(st.session_state.delete_ids)
                 # Clear the session state after deletion
                 st.session_state.delete_ids = []
+                st.experimental_rerun()  # Rerun the app to reflect the deletions
+
     
 
     else:
@@ -91,4 +92,8 @@ def remove_from_watchlist(movie_ids):
     # This function now expects a list of movie IDs to remove
     url = f"http://127.0.0.1:5000/remove_from_watchlist"
     response = requests.delete(url, json={"movie_ids": movie_ids})
+    if response.status_code == 200:
+        st.success("Your Changes Were Updated!")
+    else:
+        st.error(f"Failed to Update Changes. Error: {response.text}")
     return response.status_code == 200
