@@ -3,14 +3,13 @@ from flask import request, jsonify
 from . import app  # Import the Flask app instance from the backend package
 from .utils import fetch_image_from_tmdb  # Adjust the import path if necessary
 
-# app = Flask(__name__)
 
-# Replace with your database credentials
-host = 'localhost'  # or '127.0.0.1'
-port = 3306
-user = 'sid'
-password = '$Sidtheboss1'
-database = 'movie_app'
+host = 'example_db_host'  # Replace with your actual DB host
+port = 3306  # Typical MySQL port, replace if different
+user = 'example_user'  # Replace with your actual DB username
+password = 'example_password'  # Replace with your actual DB password
+database = 'example_database'  # Replace with your actual database name
+
 
 # Create a database connection
 conn = mysql.connector.connect(

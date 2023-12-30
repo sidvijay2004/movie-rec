@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import os
 
+api_key = 'YOUR_API_KEY'
 
 def add_movies_to_watchlist(movies):
     url = 'http://localhost:5000/add_to_watchlist'
@@ -49,7 +50,7 @@ def show_movie_recommendations():
         st.markdown("#### **Content Rating**")
 
         # Creating checkboxes for Audience Rating within a column
-        for_everyone = st.checkbox("For Everyone")
+        for_everyone = st.checkbox("For Everyone", value=True)
         adult_only = st.checkbox("Adult Only")
 
     # Creating sliders for each category below the filters
@@ -160,7 +161,7 @@ def process_selected_movies(movies):
 
 @st.cache_data
 def fetch_movie_details(tmdb_id):
-    api_key = 'b2514b23ba9a0af593911399736a265b'
+    global api_key
     url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={api_key}"
     try:
         response = requests.get(url)

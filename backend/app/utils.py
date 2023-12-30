@@ -5,6 +5,8 @@ import requests
 from . import app
 from flask import jsonify
 
+api_key = 'b2514b23ba9a0af593911399736a265b'
+
 
 def get_data(user_input):
     # Load the CSV file into a DataFrame
@@ -92,7 +94,8 @@ def find_movies(data, user_ratings, num_movies):
 
 
 def fetch_image_from_tmdb(tmdb_id):
-    api_key = 'b2514b23ba9a0af593911399736a265b'
+    global api_key
+
     url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/images?api_key={api_key}"
 
     try:
@@ -111,8 +114,8 @@ def fetch_image_from_tmdb(tmdb_id):
 
 @app.route('/get_similar_movies/<int:tmdb_id>')
 def get_similar_movies(tmdb_id):
-    api_key = 'b2514b23ba9a0af593911399736a265b'
-    # Change the endpoint to '/recommendations'
+    global api_key
+
     url = f'https://api.themoviedb.org/3/movie/{tmdb_id}/recommendations?api_key={api_key}&language=en-US&page=1'
     try:
         response = requests.get(url)
