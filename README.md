@@ -51,6 +51,9 @@ The Godfather: Part II (1974),240,2,3,10,4,10,9,English,Adult
 The machine learning model utilizes this dataset to understand the characteristics of various movies. When a user inputs their preferences for different movie attributes, the model compares these preferences with the dataset to find movies with similar profiles. This approach allows the system to suggest movies that closely align with the user's tastes, leveraging the detailed information provided in each column of the dataset.
 
 ## Architecture
+
+![Architecture Diagram](Code%20Architecture%20Diagram.png)
+
 The project follows a three-tier architecture:
 - **Frontend**: Developed with Streamlit for an interactive UI.
 - **Backend**: Flask is used to create the RESTful API that serves the recommendation logic.
