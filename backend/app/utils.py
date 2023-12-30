@@ -5,7 +5,7 @@ import requests
 from . import app
 from flask import jsonify
 
-api_key = 'b2514b23ba9a0af593911399736a265b'
+api_key = 'YOUR_API_KEY'
 
 
 def get_data(user_input):
